@@ -12,6 +12,8 @@ final class QuickChatController: NSObject {
     /// the panel goes back to the chat when shown. Shorter keeps a sign-in in progress, such as
     /// while copying a code from another app.
     private static let returnToChatAfter: TimeInterval = 5 * 60
+    /// Slightly reduce the embedded page size so chat text is easier to fit in the compact panel.
+    private static let pageZoom: CGFloat = 0.9
     private static let safariUserAgent =
         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Safari/605.1.15"
 
@@ -215,6 +217,7 @@ final class QuickChatController: NSObject {
         config.userContentController.addUserScript(WKUserScript(
             source: Self.noAutocorrectScript, injectionTime: .atDocumentStart, forMainFrameOnly: true))
         let webView = WKWebView(frame: .zero, configuration: config)
+        webView.pageZoom = Self.pageZoom
         webView.customUserAgent = Self.safariUserAgent
         webView.uiDelegate = self
         webView.navigationDelegate = self
